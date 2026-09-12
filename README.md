@@ -1,1 +1,5 @@
-# spla-saturday-card
+# スプラ土曜夜カード
+
+土曜日21:00–23:00／23:00–翌1:00のバンカラマッチ（オープン）を、Discordで共有しやすい形に表示するGitHub Pagesです。
+
+スケジュールは `spla3.yuu26.com` を主データ源とし、先の時間帯が未掲載の場合は `splatoon3.ink` の公開データで補完します。毎週土曜日にGitHub Actionsが自動更新します。
