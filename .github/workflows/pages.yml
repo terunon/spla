@@ -4,6 +4,7 @@ on:
     branches: [main]
   workflow_dispatch:
   schedule:
+    - cron: "*/30 * * * *"
     - cron: "15 3 * * 6"
     - cron: "15 6 * * 6"
 permissions:
