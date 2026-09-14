@@ -1,13 +1,8 @@
-name: GitHub Pagesを更新
+name: GitHub Pagesをデプロイ
 on:
   push:
     branches: [main]
   workflow_dispatch:
-  schedule:
-    # UTC。日本時間の 1:01 / 3:01 / … / 23:01 を起点に、取りこぼし対策として5分ごとに再試行
-    - cron: "1,6,11,16,21,26,31,36,41,46,51,56 0,2,4,6,8,10,12,14,16,18,20,22 * * *"
-    - cron: "15 3 * * 6"
-    - cron: "15 6 * * 6"
 permissions:
   contents: read
   pages: write
@@ -26,12 +21,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - name: カード画像の生成環境を準備
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y fonts-noto-cjk
-          npm install --no-save sharp@0.34.4
-      - run: node scripts/update-schedule.mjs
+      - run: node scripts/build-pages.mjs
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
