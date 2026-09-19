@@ -1,15 +1,15 @@
 import {copyFile,mkdir,readFile,writeFile} from "node:fs/promises";
 import {createHash} from "node:crypto";
-const INK="https://splatoon3.ink/data/schedules.json";
+const INK="https://splatoon3.ink/data/schedules.json";\nconst YUU="https://spla3.yuu26.com/api/bankara-open/schedule";
 const [now,expo]=await Promise.all([readFile("now.template.html","utf8"),readFile("index.template.html","utf8")]);
 await Promise.all([mkdir("_site/now/assets/cache",{recursive:true}),mkdir("_site/spliveexpo/assets/cache",{recursive:true})]);
 const cache={};
 try{
-  const r=await fetch(INK,{headers:{"User-Agent":"terunon/spla Pages build"}});
-  if(!r.ok)throw Error("schedule "+r.status);
   const urls=new Set;
-  const walk=v=>{if(Array.isArray(v))return v.forEach(walk);if(!v||typeof v!=="object")return;if(v.image?.url)urls.add(v.image.url);for(const x of Object.values(v))walk(x)};
-  walk(await r.json());
+  const walk=v=>{if(Array.isArray(v))return v.forEach(walk);if(!v||typeof v!=="object")return;if(v.image?.url)urls.add(v.image.url);if(typeof v.image==="string")urls.add(v.image);for(const x of Object.values(v))walk(x)};
+  const results=await Promise.allSettled([INK,YUU].map(async url=>{const r=await fetch(url,{headers:{"User-Agent":"terunon/spla Pages build"}});if(!r.ok)throw Error("schedule "+r.status);return r.json()}));
+  for(const result of results)if(result.status==="fulfilled")walk(result.value);
+  if(!urls.size)throw Error("schedule images unavailable");
   await Promise.all([...urls].map(async url=>{try{const image=await fetch(url);if(!image.ok)return;const name=createHash("sha256").update(url).digest("hex")+".png",buf=Buffer.from(await image.arrayBuffer());await Promise.all([writeFile("_site/now/assets/cache/"+name,buf),writeFile("_site/spliveexpo/assets/cache/"+name,buf)]);cache[url]="cache/"+name}catch{}}));
 }catch(err){console.warn("画像キャッシュを更新できませんでした:",err.message)}
 await Promise.all([
