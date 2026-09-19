@@ -5,6 +5,9 @@ const rules={AREA:"ガチエリア",LOFT:"ガチヤグラ",GOAL:"ガチホコバ
 const stages={"Scorch Gorge":"ユノハナ大渓谷","Eeltail Alley":"ゴンズイ地区","Hagglefish Market":"ヤガラ市場","Undertow Spillway":"マテガイ放水路","Mincemeat Metalworks":"ナメロウ金属","Hammerhead Bridge":"マサバ海峡大橋","Museum d'Alfonsino":"キンメダイ美術館","Mahi-Mahi Resort":"マヒマヒリゾート＆スパ","Inkblot Art Academy":"海女美術大学","Sturgeon Shipyard":"チョウザメ造船","MakoMart":"ザトウマーケット","Wahoo World":"スメーシーワールド","Flounder Heights":"ヒラメが丘団地","Brinewater Springs":"クサヤ温泉","Um'ami Ruins":"ナンプラー遺跡","Humpback Pump Track":"コンブトラック","Manta Maria":"マンタマリア号","Barnacle & Dime":"タラポートショッピングパーク","Crableg Capital":"タカアシ経済特区","Shipshape Cargo Co.":"オヒョウ海運","Bluefin Depot":"ネギトロ炭鉱","Robo ROM-en":"バイガイ亭","Marlin Airport":"カジキ空港","Lemuria Hub":"リュウグウターミナル","Urchin Underpass":"デカライン高架下"};
 const salmonStages={"Spawning Grounds":"シェケナダム","Sockeye Station":"ムニ・エール海洋発電所","Gone Fission Hydroplant":"アラマキ砦","Marooner's Bay":"難破船ドン・ブラコ","Jammin' Salmon Junction":"すじこジャンクション跡","Bonerattle Arena":"トキシラズいぶし工房"};
 const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));
+let imageCache=null;
+async function loadImageCache(){if(imageCache)return imageCache;try{const r=await fetch("./assets/image-cache.json",{cache:"force-cache"});imageCache=r.ok?await r.json():{}}catch{imageCache={}}return imageCache}
+function localImage(url){return imageCache?.[url]?"./assets/"+imageCache[url]:url}
 const jp=iso=>new Intl.DateTimeFormat("ja-JP",{timeZone:"Asia/Tokyo",month:"numeric",day:"numeric",hour:"2-digit",minute:"2-digit",hourCycle:"h23"}).format(new Date(iso));
 const clock=iso=>new Intl.DateTimeFormat("ja-JP",{timeZone:"Asia/Tokyo",hour:"2-digit",minute:"2-digit",hourCycle:"h23"}).format(new Date(iso));
 const updated=()=>new Intl.DateTimeFormat("ja-JP",{timeZone:"Asia/Tokyo",year:"numeric",month:"numeric",day:"numeric",hour:"2-digit",minute:"2-digit",hourCycle:"h23"}).format(new Date());
