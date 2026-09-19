@@ -1,6 +1,7 @@
 import {copyFile,mkdir,readFile,writeFile} from "node:fs/promises";
 import {createHash} from "node:crypto";
-const INK="https://splatoon3.ink/data/schedules.json";\nconst YUU="https://spla3.yuu26.com/api/bankara-open/schedule";
+const INK="https://splatoon3.ink/data/schedules.json";
+const YUU="https://spla3.yuu26.com/api/bankara-open/schedule";
 const [now,expo]=await Promise.all([readFile("now.template.html","utf8"),readFile("index.template.html","utf8")]);
 await Promise.all([mkdir("_site/now/assets/cache",{recursive:true}),mkdir("_site/spliveexpo/assets/cache",{recursive:true})]);
 const cache={};
